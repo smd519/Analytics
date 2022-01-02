@@ -11,8 +11,13 @@ grubbs.test function in the outliers package.
 # Source of Data
 
 The US crime dataset is available at the statsci.org Repository. It
-contains aggregated data on 47 states of the USA for 1960. The data set
-contains the following columns:
+contains aggregated data on 47 states of the USA for 1960.
+
+Link: <http://www.statsci.org/data/general/uscrime.txt>
+
+Description: <http://www.statsci.org/data/general/uscrime.html>
+
+The data set contains the following columns:
 
   - M percentage of males aged 14–24 in total state population
 
@@ -49,10 +54,6 @@ contains the following columns:
     before their first release
 
   - Crime crime rate: number of offenses per 100,000 population in 1960
-
-Link: <http://www.statsci.org/data/general/uscrime.txt>
-
-Description: <http://www.statsci.org/data/general/uscrime.html>
 
 # Summary of solution:
 
