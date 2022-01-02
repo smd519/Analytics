@@ -142,7 +142,7 @@ meltdata <- melt(data[])
 boxplot(data=meltdata, value~variable)
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/boxplot-1.png)<!-- -->
 
 ### 2.c Generate the time series from temperature data
 
@@ -172,7 +172,7 @@ temp.series = ts( as.vector(unlist(data[ , 2:21])), start = 1996, frequency = 12
 plot(temp.series[])
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### 2.d Decompose Time Series Data
 
@@ -197,7 +197,7 @@ This plot confirms my observation.
 plot(decompose(temp.series))
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 # Aproach one: Apply Exponential Smoothing on temp value
 
@@ -223,7 +223,7 @@ cat("optimum alpha: ", se$alpha)
 plot(se)
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## 2\. HoltWinters with optimum values
 
@@ -264,25 +264,25 @@ cat("\n\nmultiplicative\n", "Alpha: ",se.mu$alpha, "\tBeta: ", se.mu$beta,
 plot(se.add)
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 plot(fitted(se.add))
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 ``` r
 plot(se.mu)
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-3.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
 
 ``` r
 plot(fitted(se.mu))
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-4.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
 
 ## 3\. Apply CUSUM on Smoothed temperature value
 
@@ -313,7 +313,7 @@ for (i in 1:20)  {
 }
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-4.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-5.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-6.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-7.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-8.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-9.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-10.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-11.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-12.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-13.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-14.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-15.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-16.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-17.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-18.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-19.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-20.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-3.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-4.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-5.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-6.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-7.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-8.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-9.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-10.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-11.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-12.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-13.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-14.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-15.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-16.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-17.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-18.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-19.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-7-20.png)<!-- -->
 
 Here I plot the the smoothed data for each year. We can observe the
 cooling period for each year.
@@ -322,13 +322,13 @@ cooling period for each year.
 plot.ts(data.smooth[,1:10])
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 plot.ts(data.smooth[,11:20])
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
 ### 3.b Apply the CUSM algorithm
 
@@ -428,7 +428,7 @@ for (i in 1:20){ # Loop over years
 }
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-5.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-6.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-7.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-8.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-9.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-10.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-11.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-12.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-13.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-14.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-15.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-16.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-17.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-18.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-19.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-10-20.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-5.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-6.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-7.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-8.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-9.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-10.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-11.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-12.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-13.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-14.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-15.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-16.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-17.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-18.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-19.png)<!-- -->![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-9-20.png)<!-- -->
 
 ## 4\. Visualize the results
 
@@ -482,7 +482,7 @@ abline(h=as.Date("07-Oct","%d-%B"), col="red")
 abline(v=2005, col="red")
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ### 4.b Plot day-temperature for a couple of years to validate results
 
@@ -506,7 +506,7 @@ abline(v=as.Date("23-Sep","%d-%B"), col="red")
 abline(v=as.Date("4-Oct","%d-%B"), col="green")
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 #X2010
@@ -518,7 +518,7 @@ abline(v=as.Date("3-Oct","%d-%B"), col="red")
 abline(v=as.Date("16-Oct","%d-%B"), col="green")
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
 
 # Aproach two: Seasonaly Adjust the data
 
@@ -559,7 +559,7 @@ plot(temp.decomp.add.adj, col = "red",
      main = "Temprature: After Removing Seasonality")
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 *Lets zoom-in*, and see the effect of removng seasonality for first
 year.
@@ -572,7 +572,7 @@ plot( (temp.decomp.add$x - temp.decomp.add$seasonal)[1:123],
       main = "After removing seasonality")
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 *Multiplicative*
 
@@ -595,7 +595,7 @@ plot(temp.decomp.mul.adj, col = "red",
      main = "Temprature: After Removing Seasonality")
 ```
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ## Final Note
 
@@ -658,7 +658,7 @@ for (i in 1:20){ # Loop over years
     
     ## Warning in min(v.index): no non-missing arguments to min; returning Inf
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
     ## Warning in min(v.index): no non-missing arguments to min; returning Inf
     
@@ -696,4 +696,4 @@ for (i in 1:20){ # Loop over years
     
     ## Warning in min(v.index): no non-missing arguments to min; returning Inf
 
-![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->
+![](Exponential_Smoothing_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
