@@ -1,2 +1,2 @@
-# Breast Cancer Wisconsin
-Exploring the breast cancer data for Wisconsin; applying different data analytics methods
+# Data Analytics
+Exploring different data analytics technique to turn raw data into useful, actionable insights.
