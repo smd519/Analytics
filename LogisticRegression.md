@@ -64,7 +64,7 @@ str(GermanCredit)
     ##  $ V20: Factor w/ 2 levels "A201","A202": 1 1 1 1 1 1 1 1 1 1 ...
     ##  $ V21: int  1 2 1 1 2 1 1 1 1 2 ...
 
-*Explore the data*
+## Explore the data\*
 
 From the link provided in description, we can find the following
 information:
