@@ -331,7 +331,6 @@ cat("Predicted value from last home work =\n 1304",
 ```
 
 
-
 ```{r}
 library(pls)
 pcr_regression_component<-pcr(Crime ~ ., data = data, scale = TRUE, ncomp = 15)
