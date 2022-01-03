@@ -1,0 +1,342 @@
+---
+title: "Principal Component Analysis and Linear Regression"
+author: "Exploring US crime dataset and Making Prediction"
+
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+Here, we explore US crime dataset. We want to apply Principal Component Analysis and then create a regression model using the first few principal components. Then, We use regression to predict the observed crime rate. 
+
+Prediction for:
+
+M = 14.0
+So = 0
+Ed = 10.0
+Po1 = 12.0
+Po2 = 15.5
+LF = 0.640
+M.F = 94.0
+Pop = 150
+NW = 1.1
+U1 = 0.120
+U2 = 3.6
+Wealth = 3200
+Ineq = 20.1
+Prob = 0.04
+Time = 39.0
+
+
+
+# Source of Data
+
+The US crime dataset is available at the statsci.org Repository. It contains aggregated data on 47 states of the USA for 1960. 
+
+Link: http://www.statsci.org/data/general/uscrime.txt
+
+Description: http://www.statsci.org/data/general/uscrime.html
+
+The data set contains the following columns:
+
++ M   		percentage of males aged 14-24 in total state population
+
++ So		  indicator variable for a southern state
+
++ Ed  		mean years of schooling of the population aged 25 years or over
+
++ Po1 		per capita expenditure on police protection in 1960
+
++ Po2 		per capita expenditure on police protection in 1959
+
++ LF		  labour force participation rate of civilian urban males in the age-group 14-24
+
++ M.F		  number of males per 100 females
+
++ Pop		  state population in 1960 in hundred thousands
+
++ NW		  percentage of nonwhites in the population
+
++ U1		  unemployment rate of urban males 14-24
+
++ U2		  unemployment rate of urban males 35-39
+
++ Wealth	wealth: median value of transferable assets or family income
+
++ Ineq		income inequality: percentage of families earning below half the median income
+
++ Prob		probability of imprisonment: ratio of number of commitments to number of offenses
+
++ Time		average time in months served by offenders in state prisons before their first release
+
++ Crime		crime rate: number of offenses per 100,000 population in 1960
+
+
+# Summary of solution to this problem:
+
+1. Read the dataset and explore the data
+2. Standardize the Features
+3. Calculate the Co-Variance matrix.
+4. Get the eigenvalues and eigen-vectors
+5. Calculate the the principal components, and select the PCs based on cumulative variance
+6. Apply Regression based on first 6 and first 9 PCs. Compare R2 and adjusted R2. 
+7. Calculate the PCR Estimator or the linear regression formula based on scaled features.
+8. Perform 'Descaling' and find the linear regression formula based on original features.
+9. Predict the crime using test input
+
+
+## 1. Read the dataset
+
+We load the data and explore the summary stats.
+
+```{r}
+data <- read.table(file = 'data/uscrime.txt',
+                   sep = "\t",
+                   header=T,
+                   na.strings=c(" ","","NA"),
+                   stringsAsFactors = FALSE)
+
+summary(data)
+```
+
+## 2. Standardize the Features
+
+Before applying the regression model, we perform Standardization. Because we are about to compare measurements that have different ranges. I do not include Response in Standardization. 
+
+```{r}
+
+features.normal <- data[,1:15]
+# sd for each feature to be used for scaling and de scaling
+feature.sd <- rep(0.05, 15)
+
+# mean for each feature to be used for scaling and de scaling
+feature.mean <- rep(0.05, 15)
+  
+for (i in 1:15) {
+  feature.sd[i] <- sd(data[,i])
+  feature.mean[i] <- mean(data[,i])
+  
+  features.normal[,i] <- ( data[,i] - feature.mean[i] ) / feature.sd[i]
+} 
+
+summary(features.normal)
+```
+
+
+## 3. Co-Variance matrix
+
+Calculate the Co-Variance matrix.
+
+```{r}
+cov.matrix <- cov(features.normal) # a matrix of 15x15
+```
+
+
+## 4. Eigenvectors and Eigenvalues
+
+Get the eigenvalues and eigenvectors
+
+```{r}
+e <- eigen(cov.matrix)
+e$values
+e$vectors  # a vector of 15x15
+```
+
+
+## 5. The Principal Components
+
+Determine the principal components.
+ 
+```{r}
+pc <- data.frame(matrix(ncol = ncol(data)-1 , nrow = nrow(data)))
+for (i in 1:(ncol(data)-1)) {
+  v <- e$vectors[,i] 
+  pc[,i] <- as.matrix(features.normal) %*%  v
+}
+print(pc)
+```
+
+
+Now, we find the components which explain the maximum variance. We need to calculate the variance, proportional variance, and cumulative variance for each principal component.
+
+```{r}
+pc.var <- data.frame(matrix(ncol = ncol(data)-1 , nrow = 3))
+
+# Variance for each PCs
+for (i in 1:(ncol(data)-1)) {
+  pc.var[1,i] <- var( pc[,i])
+}
+
+# Proportion variance 
+for (i in 1:(ncol(data)-1)) {
+  pc.var[2,i] <- pc.var[1,i]/sum(pc.var[1,])
+}
+
+# cumulative variance
+pc.var[3,1] <- pc.var[2,1]
+for (i in 2:(ncol(data)-1)) {
+  pc.var[3,i] <- pc.var[3,(i-1)] + pc.var[2,i]
+}
+
+print(pc.var)
+```
+
+1. From "The Cumulative Variance" plot, we can see that with 6 PC, almost 90% of the variance or total variability is explained. 
+
+2. Note that X1 with 40% total variability is significant. After X7 we see just 2% or less variance for each Principal Components. 2% is not significant. 
+
+3. X1,X2,...,X9 explains 96% of total variability. 
+
+That means we could reduce the dimensions from 15 to 6 or 9 without much compromising on total variability.
+
+```{r}
+plot(y= pc.var[3,], x= c(1:15), type = "b", main = "The Cumulative Variance")
+abline(h=0.90, col = "red")
+```
+
+
+I move forward with linear regression based on the follwoing two scenario: 
+
+1. The first 6 principle component. 
+2. The first 9 principle component. 
+
+## 6. Apply Linear Regression
+
+First, we create the training data frame and regression model based on the first 6 principle component. 
+
+ 
+```{r}
+pc.r <- data.frame(PC = pc[,1:6], Crime = data[,16])
+lm.model.6 <- lm(Crime~., pc.r)
+lm.6.summary <- summary(lm.model.6)
+print(lm.6.summary)
+```
+
+
+Then, we create the training data frame and regression model based on the first 9 principle component. 
+
+```{r}
+pc.r <- data.frame(PC = pc[,1:9], Crime = data[,16])
+lm.model.9 <- lm(Crime~., pc.r)
+lm.9.summary <- summary(lm.model.9)
+print(lm.9.summary)
+```
+
+Now, let's compare the R-squared and Adjusted R-squared for both model:
+
+```{r}
+
+lm.6.R2 <- lm.6.summary$r.squared
+lm.6.aR2 <- lm.6.summary$adj.r.squared
+
+lm.9.R2 <- lm.9.summary$r.squared
+lm.9.aR2 <- lm.9.summary$adj.r.squared
+
+
+cat ("Model Using the first 6 PC\n",
+      "R2: ", lm.6.R2, "\tAdjusted R2: ", lm.6.aR2,
+     "\n\nModel Using the first 9 PC\n", 
+     "R2: ", lm.9.R2, "\tAdjusted R2: ", lm.9.aR2,
+     "\n\n\nModel Using 15 Features\n",
+      "R2: ", 0.803 , "\tAdjusted R2: ", 0.708,
+     "\n\nModel Using 6 Features\n", 
+     "R2: ", 0.766 , "\tAdjusted R: ",  0.731)
+```
+
+About Adjusted R2: "If you add more and more useless variables to a model, adjusted r-squared will decrease". That is why "Adjusted R2" for the model with 15 features is smaller.
+
+
+## 7. Calculate the PCR Estimator
+
+**For rest of the process, I focus only on the model based on the first 6 principal component.**
+
+```{r}
+
+PC.index <- c(1:6)
+
+# vector having the first first k columns of V (eignevectors)
+V.k <- e[["vectors"]][,PC.index]
+
+# matrix having the first k principal components as its columns
+#pc[,PC.index]
+
+# vector of estimated regression coefficients for principal components
+A.k <- as.vector(lm.model.6$coefficients[2:7])
+
+
+# the final PCR estimator of beta based on the selected k PCs
+alpha.scaled <- V.k %*% A.k
+Intercept.scaled <- unlist(lm.model.6$coefficients[1])
+
+
+```
+
+
+This means that :
+
+$Predicted.values = as.matrix(features.normal) \%*\%  alpha.scaled + Intercept.scaled$
+
+
+
+
+
+## 8. Descaling the Alpha values
+
+```{r}
+
+# the final PCR estimator of beta based on the selected k PCs
+#alpha.scaled 
+#Intercept.scaled
+
+# sd for each feature to be used for scaling and de scaling
+#feature.sd 
+
+# mean for each feature to be used for scaling and de scaling
+#feature.mean 
+
+alpha <- alpha.scaled/feature.sd 
+Intercept <- Intercept.scaled - ( t(alpha.scaled) %*% (feature.mean/feature.sd) )
+
+```
+
+
+This means that :
+
+$Predicted.values = as.matrix(features) \%*\%  alpha + Intercept$
+
+where 
+
+```{r}
+cat("Intercept = \n",Intercept,
+    "\n\nalpha = \n", unlist(alpha))
+```
+
+
+## 9. Predicted response for new data
+
+Here we see what value we predict based on the new data provided in questions.
+
+```{r}
+x <- data.frame(M = 14.0, So = 0, Ed = 10.0, Po1 = 12.0, Po2 = 15.5, LF = 0.640,
+       M.F = 94.0, Pop = 150, NW = 1.1, U1 = 0.120, U2 = 3.6, Wealth = 3200,
+       Ineq = 20.1, Prob = 0.04, Time = 39.0)
+
+crime.predicted <- as.vector(unlist(x)) %*% alpha + Intercept
+
+cat("Predicted value from last home work =\n 1304",
+    "\nPredicted value based on PCA=\n", crime.predicted )
+```
+
+
+
+```{r}
+library(pls)
+pcr_regression_component<-pcr(Crime ~ ., data = data, scale = TRUE, ncomp = 15)
+validationplot(pcr_regression_component)
+validationplot(pcr_regression_component,val.type="R2")
+
+
+```
